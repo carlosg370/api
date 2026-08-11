@@ -9,17 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/maisabsilva7-lab/API.git"
+    "url": "git+https://github.com/carlosg370/api.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/maisabsilva7-lab/API/issues"
+    "url": "https://github.com/carlosg370/api/issues"
   },
-  "homepage": "https://github.com/maisabsilva7-lab/API#readme",
-  "dependencies": {
-    "express": "^5.2.1"
-  }
+  "homepage": "https://github.com/carlosg370/api#readme"
 }

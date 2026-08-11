@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rede Social - Cadastro com Upload de Foto</title>
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-color: #1f2937;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            width: 100%;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        input[type="text"],
+        input[type="file"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: #fff;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Grid de Perfis */
+        .profiles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .profile-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 3px solid var(--primary-color);
+        }
+
+        .profile-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            word-break: break-word;
+        }
+
+        .empty-message {
+            text-align: center;
+            color: #6b7280;
+            grid-column: 1 / -1;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Rede Social Simples</h1>
+    </header>
+
+    <div class="container">
+        <!-- Tela de Cadastro -->
+        <div class="card">
+            <h2>Cadastrar Novo Perfil</h2>
+            <form id="formCadastro">
+                <div class="form-group">
+                    <label for="nome">Nome de Usuário</label>
+                    <input type="text" id="nome" placeholder="Ex: Maria Silva" required>
+                </div>
+                <div class="form-group">
+                    <label for="foto">Escolher Foto do Computador</label>
+                    <input type="file" id="foto" accept="image/*" required>
+                </div>
+                <button type="submit">Cadastrar Perfil</button>
+            </form>
+        </div>
+
+        <!-- Tela de Perfis Cadastrados -->
+        <div>
+            <h2>Perfis Cadastrados</h2>
+            <div id="gridPerfis" class="profiles-grid">
+                <!-- Os perfis aparecerão aqui dinamicamente -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const formCadastro = document.getElementById('formCadastro');
+        const gridPerfis = document.getElementById('gridPerfis');
+
+        // Carrega os perfis salvos no navegador ao iniciar a página
+        let perfis = JSON.parse(localStorage.getItem('perfis_rede_social')) || [];
+
+        // Função para exibir os perfis na tela
+        function renderizarPerfis() {
+            gridPerfis.innerHTML = '';
+
+            if (perfis.length === 0) {
+                gridPerfis.innerHTML = '<p class="empty-message">Nenhum perfil cadastrado ainda.</p>';
+                return;
+            }
+
+            perfis.forEach(perfil => {
+                const card = document.createElement('div');
+                card.classList.add('profile-card');
+
+                card.innerHTML = `
+                    <img src="${perfil.foto}" alt="Foto de ${perfil.nome}" class="profile-avatar">
+                    <div class="profile-name">${perfil.nome}</div>
+                `;
+
+                gridPerfis.appendChild(card);
+            });
+        }
+
+        // Evento de envio do formulário
+        formCadastro.addEventListener('submit', (e) => {
+            e.preventDefault(); // Evita recarregar a página
+
+            const nome = document.getElementById('nome').value;
+            const inputFoto = document.getElementById('foto');
+            const arquivo = inputFoto.files[0];
+
+            if (arquivo) {
+                // O FileReader lê o arquivo do computador e o converte em texto (Base64) para poder ser salvo
+                const reader = new FileReader();
+
+                reader.onload = function(event) {
+                    const fotoBase64 = event.target.result;
+
+                    // Cria o objeto do novo perfil
+                    const novoPerfil = { nome, foto: fotoBase64 };
+
+                    // Adiciona ao array e salva no localStorage
+                    perfis.push(novoPerfil);
+                    localStorage.setItem('perfis_rede_social', JSON.stringify(perfis));
+
+                    // Atualiza a tela e limpa o formulário
+                    renderizarPerfis();
+                    formCadastro.reset();
+                };
+
+                reader.readAsDataURL(arquivo);
+            }
+        });
+
+        // Renderiza os perfis ao carregar a página
+        renderizarPerfis();
+    </script>
+</body>
+</html>
