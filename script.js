@@ -11,3 +11,10 @@ inputUpload.addEventListener('change', function(evento) {
         console.log("Nenhum arquivo selecionado.");
     }
 });
+const nome = document.getElementById("nome")
+
+const button = document.getElementById("btn")
+
+button.addEventListener("click",() => { 
+    console.log(nome.value)
+} )
