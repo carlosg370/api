@@ -3,177 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rede Social - Cadastro com Upload de Foto</title>
-    <style>
-        :root {
-            --primary-color: #4f46e5;
-            --primary-hover: #4338ca;
-            --bg-color: #f3f4f6;
-            --card-bg: #ffffff;
-            --text-color: #1f2937;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 1rem;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-            width: 100%;
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            margin-bottom: 2rem;
-        }
-
-        h2 {
-            margin-bottom: 1.5rem;
-            color: var(--primary-color);
-            font-size: 1.5rem;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-
-        input[type="text"],
-        input[type="file"] {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 1rem;
-            background-color: #fff;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-        }
-
-        button {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            width: 100%;
-        }
-
-        button:hover {
-            background-color: var(--primary-hover);
-        }
-
-        /* Grid de Perfis */
-        .profiles-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .profile-card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .profile-avatar {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 1rem;
-            border: 3px solid var(--primary-color);
-        }
-
-        .profile-name {
-            font-weight: 600;
-            font-size: 1.1rem;
-            word-break: break-word;
-        }
-
-        .empty-message {
-            text-align: center;
-            color: #6b7280;
-            grid-column: 1 / -1;
-        }
-    </style>
+    <title>Galeria de Arte com Arquivos Locais</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header>
-        <h1>Rede Social Simples</h1>
+        <h1>Galeria de Arte</h1>
+        <p>Envie fotos diretamente do seu computador</p>
     </header>
 
-    <div class="container">
-        <!-- Tela de Cadastro -->
-        <div class="card">
-            <h2>Cadastrar Novo Perfil</h2>
-            <form id="formCadastro">
-                <div class="form-group">
-                    <label for="nome">Nome de Usuário</label>
-                    <input type="text" id="nome" placeholder="Ex: Maria Silva" required>
+    <main class="container">
+        <!-- Formulário para upload do computador -->
+        <section class="form-section">
+            <h2>Adicionar Nova Obra</h2>
+            <form id="form-arte">
+                <div class="input-group">
+                    <label for="titulo">Nome da Arte:</label>
+                    <input type="text" id="titulo" required placeholder="Ex: Noite Estrelada">
                 </div>
-                <div class="form-group">
-                    <label for="foto">Escolher Foto do Computador</label>
-                    <input type="file" id="foto" accept="image/*" required>
+                <div class="input-group">
+                    <label for="autor">Autor:</label>
+                    <input type="text" id="autor" required placeholder="Ex: Vincent van Gogh">
                 </div>
-                <button id="btn" onclick="handleauth()"> Entrar </button>
+                <div class="input-group">
+                    <label for="valor">Valor (R$):</label>
+                    <input type="text" id="valor" required placeholder="Ex: 1.500,00">
+                </div>
+                <div class="input-group">
+                    <label for="imagem">Escolher Foto do Computador:</label>
+                    <input type="file" id="imagem" accept="image/*" required>
+                </div>
+                <button type="submit">Cadastrar Obra</button>
             </form>
-        </div>
+        </section>
 
-        <!-- Tela de Perfis Cadastrados -->
-        <div>
-            <h2>Perfis Cadastrados</h2>
-            <div id="gridPerfis" class="profiles-grid">
-                <!-- Os perfis aparecerão aqui dinamicamente -->
+        <!-- Galeria de Cards -->
+        <section>
+            <h2>Obras em Exibição</h2>
+            <div class="galeria" id="galeria-container">
+                <!-- Os cards inseridos aparecem aqui -->
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
 
-    <script src="./script.js">
-        
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

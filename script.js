@@ -1,20 +1,51 @@
-const inputUpload = document.getElementById('meu-upload')
+const obrasDeArte = [];
 
-inputUpload.addEventListener('change', function(evento) {  
+const container = document.getElementById('galeria-container');
+const form = document.getElementById('form-arte');
 
-    const arquivo = evento.target.files[0]
+function renderizarGaleria() {
+    container.innerHTML = "";
+    obrasDeArte.forEach(obra => {
+        const card = document.createElement('div');
+        card.classList.add('card');
 
-    if (arquivo) {
-        const nomeDaImagem = arquivo.nomeDaImagem
-        console.log(nomeDaImagem)
-    } else {
-        console.log("Nenhum arquivo selecionado.");
+        card.innerHTML = `
+            <img src="${obra.imagem}" alt="${obra.titulo}">
+            <div class="card-info">
+                <h3 class="titulo-arte">${obra.titulo}</h3>
+                <p class="autor">Por ${obra.autor}</p>
+                <p class="valor">${obra.valor}</p>
+            </div>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const tituloInput = document.getElementById('titulo').value;
+    const autorInput = document.getElementById('autor').value;
+    const valorInput = document.getElementById('valor').value;
+    const imagemInput = document.getElementById('imagem').files[0];
+
+    if (imagemInput) {
+        const leitor = new FileReader();
+
+        leitor.onload = function(e) {
+            const novaObra = {
+                titulo: tituloInput,
+                autor: autorInput,
+                valor: `R$ ${valorInput}`,
+                imagem: e.target.result // Lê a imagem como dados em formato base64
+            };
+
+            obrasDeArte.push(novaObra);
+            renderizarGaleria();
+            form.reset();
+        }
+
+        leitor.readAsDataURL(imagemInput);
     }
 });
-const nome = document.getElementById("nome")
-
-const button = document.getElementById("btn")
-
-button.addEventListener("click",() => { 
-    console.log(nome.value)
-} )
